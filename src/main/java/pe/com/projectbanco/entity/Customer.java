@@ -13,8 +13,11 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class Customer {
     @Id
     private String id;
+    private String correo;
+    private String direccion;
     private String nroDocumento;
     private String nombres;
     private String tipoCliente;
+    private String tipoProducto;
 
 }
