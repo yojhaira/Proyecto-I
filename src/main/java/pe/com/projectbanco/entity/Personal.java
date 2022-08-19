@@ -8,9 +8,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Document(collation = "products")
-public class Product {
-    private String id;
-    private String tipoProducto;
-
+@Document(collation = "personal")
+public class Personal {
 }
