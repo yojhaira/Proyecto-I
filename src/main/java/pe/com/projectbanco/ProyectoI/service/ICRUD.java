@@ -11,7 +11,7 @@ public interface ICRUD<T, V> {
 
     Flux<T> findAll();
 
-    Mono<T> findById(V id);
+    Flux<T> findById(V id);
 
     Mono<Void> delete(T obj);
 

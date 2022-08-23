@@ -38,10 +38,18 @@ public class CustomerServiceImpl implements ICustomerService {
     }
 
     @Override
-    public Mono<Customer> findById(Integer id) {
+    public Flux<Customer> findById(Integer id) {
         logger.info(" Request Body: "+ id);
-        return iCustomerRepo.findById(id);//op.isPresent() ? op.get() : new Customer();
+        return iCustomerRepo.findAll().filter(p->p.getIdCustomer().equals(id));
+
     }
+
+    /*@Override
+    public Flux<Customer> findById(Integer id) {
+        logger.info(" Request Body: "+ id);
+        return iCustomerRepo.findAll().filter(p->p.getIdCustomer().equals(id));
+
+    }*/
 
     @Override
     public Mono<Void> delete(Customer oCustomer) {
@@ -56,4 +64,8 @@ public class CustomerServiceImpl implements ICustomerService {
         return null;
     }
 
+    @Override
+    public Flux<Customer> findByIdCustomer(String idCustomer) {
+        return iCustomerRepo.findAll().filter(p->p.getIdCustomer().equals(idCustomer));
+    }
 }

@@ -24,12 +24,13 @@ public class CustomerController {
         return new ResponseEntity<>(oCustomer, HttpStatus.CREATED);
     }
 
-    @GetMapping(value = "/findAll", produces = "application/json")
+    @GetMapping(value = "/findAll")
 
-    public ResponseEntity<Flux<Customer>> findAllCustomers() {
-        log.info("{} {}", "Start controllerCustomer method findAll");
-        Flux<Customer> listCustomer = iCustomerService.findAll();
-        return new ResponseEntity<Flux<Customer>>(listCustomer, HttpStatus.OK);
+    public ResponseEntity<Flux<Customer>> findAll() {
+        log.info("Start controllerCustomer method findAll");
+
+       Flux<Customer> listCustomer = iCustomerService.findAll();
+        return new ResponseEntity<>( listCustomer,HttpStatus.OK);
     }
 
     @PutMapping
@@ -37,10 +38,16 @@ public class CustomerController {
         Mono<Customer> oCustomer = iCustomerService.update(customer);
         return new ResponseEntity<>(oCustomer, HttpStatus.CREATED);
     }
+    @GetMapping("listById/{codCustomer}")
+    public  ResponseEntity<Flux<Customer>> findByIdCustomer(@PathVariable("codCustomer") String idCustomer){
+        Flux<Customer> oListCustomer = iCustomerService.findByIdCustomer(idCustomer);
+        return new ResponseEntity<>(oListCustomer,HttpStatus.OK);
+    }
 
     @DeleteMapping("/{codCustomer}")
-    public ResponseEntity<Object> deleteCustomer(@PathVariable("codCustomer") Integer id) {
+    public ResponseEntity<Void> deleteCustomer(@PathVariable("codCustomer") Integer id) {
+        Flux<Customer> oCustomer = iCustomerService.findById(id);
         iCustomerService.deleteById(id);
-        return new ResponseEntity<Object>(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
     }
 }

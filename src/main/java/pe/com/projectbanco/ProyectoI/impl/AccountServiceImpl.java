@@ -1,10 +1,12 @@
 package pe.com.projectbanco.ProyectoI.impl;
 
+import org.springframework.stereotype.Service;
 import pe.com.projectbanco.ProyectoI.model.Account;
 import pe.com.projectbanco.ProyectoI.service.IAccountService;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+@Service
 public class AccountServiceImpl implements IAccountService {
     @Override
     public Mono<Account> create(Account obj) {
@@ -22,7 +24,7 @@ public class AccountServiceImpl implements IAccountService {
     }
 
     @Override
-    public Mono<Account> findById(Integer id) {
+    public Flux<Account> findById(Integer id) {
         return null;
     }
 
