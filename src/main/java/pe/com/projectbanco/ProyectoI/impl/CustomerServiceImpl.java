@@ -39,13 +39,19 @@ public class CustomerServiceImpl implements ICustomerService {
 
     @Override
     public Mono<Customer> findById(Integer id) {
-        //Flux<Customer> op = iCustomerRepo.findById(id);
         logger.info(" Request Body: "+ id);
         return iCustomerRepo.findById(id);//op.isPresent() ? op.get() : new Customer();
     }
 
     @Override
+    public Mono<Void> delete(Customer oCustomer) {
+        logger.info(" Request Body: "+ oCustomer);
+        return iCustomerRepo.delete(oCustomer);
+    }
+
+    @Override
     public Mono<Void> deleteById(Integer id) {
+        logger.info(" Request Body: "+ id);
          iCustomerRepo.deleteById(id).subscribe();
         return null;
     }
