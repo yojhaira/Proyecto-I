@@ -1,6 +1,5 @@
 package pe.com.projectbanco.ProyectoI.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,7 +15,8 @@ import javax.validation.Valid;
 
 public class Business {
     @Id
-    private Integer idBusiness;
+    private String id;
+    private String idBusiness;
     private String ruc;
     private String companyName;
     private String legalRepresentative;
@@ -24,9 +24,5 @@ public class Business {
     @Valid
     private Customer customer;
 
-    @JsonIgnore
-    public Customer getCustomer() {
-        return customer;
-    }
 
 }

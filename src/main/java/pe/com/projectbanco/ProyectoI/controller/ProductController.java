@@ -59,4 +59,15 @@ public class ProductController {
         Flux<Product> oListCustomer = iProductrService.findByNameProduct(nameProduct);
         return new ResponseEntity<>(oListCustomer,HttpStatus.OK);
     }
+
+    @DeleteMapping("delete/{codProduct}")
+    public Flux<ResponseEntity<Void>> deleteBusiness(@PathVariable("codProduct") String codProduct)
+    {
+        return iProductrService.findByCodProduct(codProduct).flatMap(p -> {
+            return iProductrService.delete(p).then(Mono.just( new ResponseEntity<Void>(HttpStatus.NO_CONTENT)));
+        }).defaultIfEmpty(new ResponseEntity<Void>(HttpStatus.NOT_FOUND));
+    }
+
+
+
 }

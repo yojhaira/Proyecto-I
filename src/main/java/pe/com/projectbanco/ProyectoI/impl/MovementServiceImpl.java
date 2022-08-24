@@ -51,4 +51,9 @@ public class MovementServiceImpl implements IMovementService {
 
         return iMovRepo.delete(obj);
     }
+
+    @Override
+    public Flux<Movement> findByIdMovement(String codMovement) {
+        return iMovRepo.findAll().filter(res-> res.getCodMovement().equals(codMovement));
+    }
 }

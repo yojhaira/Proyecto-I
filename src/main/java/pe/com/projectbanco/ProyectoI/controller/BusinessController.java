@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pe.com.projectbanco.ProyectoI.model.Business;
@@ -41,21 +42,28 @@ public class BusinessController {
         return new ResponseEntity<>(p, HttpStatus.CREATED);
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteBusiness(@PathVariable("id") String id)
+    @DeleteMapping("delete/{idBusiness}")
+    public Flux<ResponseEntity<Void>> deleteBusiness(@PathVariable("idBusiness") String idBusiness)
     {
-       Mono<Business> d = iBusinessService.listPorId(id);
-       //iMovementService.delete(id);
-        return new  ResponseEntity<Void>(HttpStatus.NO_CONTENT); //ResponseEntity<Void>(HttpStatus.NO_CONTENT);
+        return iBusinessService.findByIdBusiness(idBusiness).flatMap(p -> {
+            return iBusinessService.delete(p).then(Mono.just( new ResponseEntity<Void>(HttpStatus.NO_CONTENT)));
+        }).defaultIfEmpty(new ResponseEntity<Void>(HttpStatus.NOT_FOUND));
     }
 
-    /*{
-        return iMovementService.delete(id);
+    @GetMapping("findById/{idBusiness}")
+    public Flux<ResponseEntity<Business>> findByIdBusiness(@PathVariable("idBusiness") String idBusiness){
+        logger.info("Start controllerCustomer method findByIdBusiness =>", idBusiness);
+        return iBusinessService.findByIdBusiness(idBusiness)
+                .map(res-> ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(res))
+                .defaultIfEmpty(ResponseEntity.notFound().build());
+    }
 
-              /*  iMovementService.findById(id).flatMap(p ->{
-            return iMovementService.delete(p).then(Mono.just(new ResponseEntity<Void>(HttpStatus.NO_CONTENT)));
-        }).defaultIfEmpty(new ResponseEntity<Void>(HttpStatus.NOT_FOUND));*/
-    //}
+    @GetMapping("findByNroDoc/{ruc}")
+    public  ResponseEntity<Flux<Business>> findByRUC(@PathVariable("ruc") String ruc){
+        logger.info("Start controllerCustomer method findByRUC =>", ruc);
+        Flux<Business> ListBusiness= iBusinessService.findByRUC(ruc);
+        return new ResponseEntity<>(ListBusiness,HttpStatus.OK);
+    }
 
 
 }

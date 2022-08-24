@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pe.com.projectbanco.ProyectoI.model.Movement;
@@ -40,21 +41,19 @@ public class MovementController {
         return new ResponseEntity<>(oMovement, HttpStatus.CREATED);
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteMovement(@PathVariable("id") String id)
-    {
-       Mono<Movement> oMovement = iMovementService.listPorId(id);
-       //iMovementService.delete(id);
-        return new  ResponseEntity<Void>(HttpStatus.NO_CONTENT); //ResponseEntity<Void>(HttpStatus.NO_CONTENT);
+    @DeleteMapping("delete/{codMovement}")
+    public Flux<ResponseEntity<Void>> deleteMovemenent(@PathVariable("codMovement") String codMovement) {
+        logger.info("Start controllerMovemenent method change Delete =>", codMovement);
+        return iMovementService.findByIdMovement(codMovement).flatMap(res -> {
+            return iMovementService.delete(res).then(Mono.just( new ResponseEntity<Void>(HttpStatus.NO_CONTENT)));
+        }).defaultIfEmpty(new ResponseEntity<Void>(HttpStatus.NOT_FOUND));
     }
 
-    /*{
-        return iMovementService.delete(id);
-
-              /*  iMovementService.findById(id).flatMap(p ->{
-            return iMovementService.delete(p).then(Mono.just(new ResponseEntity<Void>(HttpStatus.NO_CONTENT)));
-        }).defaultIfEmpty(new ResponseEntity<Void>(HttpStatus.NOT_FOUND));*/
-    //}
-
-
+    @GetMapping("findById/{codMovement}")
+    public Flux<ResponseEntity<Movement>> findByIdCustomer(@PathVariable("codMovement") String codMovement){
+        logger.info("Start controllerMovemenent method findByIdMovemenent =>", codMovement);
+        return iMovementService.findByIdMovement(codMovement)
+                .map(res-> ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(res))
+                .defaultIfEmpty(ResponseEntity.notFound().build());
+    }
 }

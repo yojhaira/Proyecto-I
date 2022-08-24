@@ -5,11 +5,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pe.com.projectbanco.ProyectoI.model.Business;
-import pe.com.projectbanco.ProyectoI.model.Customer;
 import pe.com.projectbanco.ProyectoI.repo.IBusinessRepo;
-import pe.com.projectbanco.ProyectoI.repo.ICustomerRepo;
 import pe.com.projectbanco.ProyectoI.service.IBusinessService;
-import pe.com.projectbanco.ProyectoI.service.ICustomerService;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -53,4 +50,13 @@ public class BusinessServiceImpl implements IBusinessService {
 
     }
 
+    @Override
+    public Flux<Business> findByIdBusiness(String idBusiness) {
+        return iBusinessRepo.findAll().filter(p->p.getIdBusiness().equals(idBusiness));
+    }
+
+    @Override
+    public Flux<Business> findByRUC(String ruc) {
+        return iBusinessRepo.findAll().filter(p->p.getRuc().equals(ruc));
+    }
 }

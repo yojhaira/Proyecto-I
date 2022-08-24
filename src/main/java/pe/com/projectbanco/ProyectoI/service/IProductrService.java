@@ -7,6 +7,8 @@ import reactor.core.publisher.Flux;
 public interface IProductrService extends ICRUD<Product, String> {
     @Query("{'nameProduct':?0}")
     Flux<Product> findByNameProduct(String nameProduct);
+    @Query("{'codProduct':?0}")
+    Flux<Product> findByCodProduct(String codProduct);
 
 
 }
