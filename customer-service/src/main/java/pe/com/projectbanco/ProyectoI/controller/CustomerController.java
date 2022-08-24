@@ -3,6 +3,7 @@ package pe.com.projectbanco.ProyectoI.controller;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pe.com.projectbanco.ProyectoI.model.Customer;
@@ -19,35 +20,46 @@ public class CustomerController {
 
     @PostMapping(value = "/create", consumes = "application/json", produces = "application/json")
     public ResponseEntity<Mono<Customer>> createCustomer(@RequestBody Customer customer) {
-        log.info("{} {}", "Start controllerCustomer method Create");
+        log.info("Start controllerCustomer method Create");
         Mono<Customer> oCustomer = iCustomerService.create(customer);
         return new ResponseEntity<>(oCustomer, HttpStatus.CREATED);
     }
 
-    @GetMapping(value = "/findAll")
-
-    public ResponseEntity<Flux<Customer>> findAll() {
+    @GetMapping(value = "/findAll", produces = "application/json")
+    public ResponseEntity<Flux<Customer>> findAllCustomers() {
         log.info("Start controllerCustomer method findAll");
+        Flux<Customer> listCustomer = iCustomerService.findAll();
+        return new ResponseEntity<Flux<Customer>>(listCustomer, HttpStatus.OK);
 
-       Flux<Customer> listCustomer = iCustomerService.findAll();
-        return new ResponseEntity<>( listCustomer,HttpStatus.OK);
     }
 
     @PutMapping
     public ResponseEntity<Mono<Customer>> changeCustomer(@RequestBody Customer customer) {
-        Mono<Customer> oCustomer = iCustomerService.update(customer);
-        return new ResponseEntity<>(oCustomer, HttpStatus.CREATED);
-    }
-    @GetMapping("listById/{codCustomer}")
-    public  ResponseEntity<Flux<Customer>> findByIdCustomer(@PathVariable("codCustomer") String idCustomer){
-        Flux<Customer> oListCustomer = iCustomerService.findByIdCustomer(idCustomer);
-        return new ResponseEntity<>(oListCustomer,HttpStatus.OK);
+        log.info("Start controllerCustomer method change");
+        Mono<Customer> p = iCustomerService.update(customer);
+        return new ResponseEntity<>(p, HttpStatus.CREATED);
     }
 
-    @DeleteMapping("/{codCustomer}")
-    public ResponseEntity<Void> deleteCustomer(@PathVariable("codCustomer") Integer id) {
-        Flux<Customer> oCustomer = iCustomerService.findById(id);
-        iCustomerService.deleteById(id);
-        return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
+    @DeleteMapping("delete/{codCustomer}")
+    public Flux<ResponseEntity<Void>> deleteCustomer(@PathVariable("codCustomer") String codCustomer) {
+        log.info("Start controllerCustomer method change Delete =>", codCustomer);
+       return iCustomerService.findByIdCustomer(codCustomer).flatMap(res -> {
+            return iCustomerService.delete(res).then(Mono.just( new ResponseEntity<Void>(HttpStatus.NO_CONTENT)));
+        }).defaultIfEmpty(new ResponseEntity<Void>(HttpStatus.NOT_FOUND));
+    }
+
+    @GetMapping("findById/{codCustomer}")
+    public Flux<ResponseEntity<Customer>> findByIdCustomer(@PathVariable("codCustomer") String codCustomer){
+        log.info("Start controllerCustomer method findByIdCustomer =>", codCustomer);
+        return iCustomerService.findByIdCustomer(codCustomer)
+                .map(res-> ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(res))
+                .defaultIfEmpty(ResponseEntity.notFound().build());
+    }
+
+    @GetMapping("findByNroDoc/{nroOocument}")
+    public  ResponseEntity<Flux<Customer>> findByNroDocument(@PathVariable("nroOocument") String nroOocument){
+        log.info("Start controllerCustomer method findByIdCustomer =>", nroOocument);
+        Flux<Customer> oListCustomer = iCustomerService.findByNroDocument(nroOocument).filter(p->p.isActive_s_n());
+        return new ResponseEntity<>(oListCustomer,HttpStatus.OK);
     }
 }

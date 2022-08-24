@@ -14,11 +14,8 @@ import reactor.core.publisher.Mono;
 //@Component
 public class CustomerServiceImpl implements ICustomerService {
     private static final Logger logger = LoggerFactory.getLogger(CustomerServiceImpl.class);
-
-
     @Autowired
     private ICustomerRepo iCustomerRepo;
-
     @Override
     public Mono<Customer> create(Customer obj) {
         logger.info(" Request Body: "+ obj);
@@ -27,45 +24,46 @@ public class CustomerServiceImpl implements ICustomerService {
 
     @Override
     public Mono<Customer> update(Customer obj) {
-        logger.info(" Request Body: "+ obj);
         return iCustomerRepo.save(obj);
     }
 
     @Override
     public Flux<Customer> findAll() {
-        logger.info(" Request Body: ");
         return iCustomerRepo.findAll();
     }
 
     @Override
-    public Flux<Customer> findById(Integer id) {
-        logger.info(" Request Body: "+ id);
-        return iCustomerRepo.findAll().filter(p->p.getIdCustomer().equals(id));
-
-    }
-
-    /*@Override
-    public Flux<Customer> findById(Integer id) {
-        logger.info(" Request Body: "+ id);
-        return iCustomerRepo.findAll().filter(p->p.getIdCustomer().equals(id));
-
-    }*/
-
-    @Override
-    public Mono<Void> delete(Customer oCustomer) {
-        logger.info(" Request Body: "+ oCustomer);
-        return iCustomerRepo.delete(oCustomer);
+    public Mono<Customer> listPorId(String id) {
+        Mono<Customer> op = iCustomerRepo.findById(id);
+        return op;
     }
 
     @Override
-    public Mono<Void> deleteById(Integer id) {
-        logger.info(" Request Body: "+ id);
-         iCustomerRepo.deleteById(id).subscribe();
+    public Mono<Void> deleteById(String id) {
         return null;
+    }
+
+
+    @Override
+    public Mono<Void> delete(Customer customer) {
+        return iCustomerRepo.delete(customer);
+
     }
 
     @Override
     public Flux<Customer> findByIdCustomer(String idCustomer) {
-        return iCustomerRepo.findAll().filter(p->p.getIdCustomer().equals(idCustomer));
+        return iCustomerRepo.findAll().filter(p->p.getCodCustomer().equals(idCustomer));
+    }
+
+    @Override
+    public Flux<Customer> findByNroDocument(String customerType) {
+        return iCustomerRepo.findAll().filter(p->p.getNroDocument().equals(customerType));
+
+    }
+
+    @Override
+    public Flux<Customer> findByTypeCustomer(String customerType) {
+        return iCustomerRepo.findAll().filter(p->p.getCustomerType().equals(customerType));
+
     }
 }

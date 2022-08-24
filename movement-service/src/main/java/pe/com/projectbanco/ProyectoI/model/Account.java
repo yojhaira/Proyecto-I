@@ -1,25 +1,35 @@
 package pe.com.projectbanco.ProyectoI.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.bson.codecs.pojo.annotations.BsonIgnore;
+import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.validation.Valid;
+import java.util.Date;
+
+
+@AllArgsConstructor
+@NoArgsConstructor
+@Document(collection = "account")
+@Data
 
 public class Account {
     @Id
-    private String id;
+    @BsonIgnore
+    private ObjectId id;
     private String codAccount;
-    private String productType;
-    private String authorization;
-    private Double maintenanceFee;
-    private int movementLimit;
-    private int creditsAllowed;
-    private boolean active = true;
-
+    private Date dateOpen;
+    private double amount;
     @Valid
-    private Customer customer;
-
-   /* @JsonIgnore
-    public Client getClient() {
-        return client;
-    }*/
+    private Product product;
+    public Product getProduct() {
+        return product;
+    }
+    public Product setProduct () {
+        return product;
+    }
 }
