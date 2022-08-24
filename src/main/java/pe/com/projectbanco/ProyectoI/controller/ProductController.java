@@ -1,48 +1,46 @@
 package pe.com.projectbanco.ProyectoI.controller;
 
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import pe.com.projectbanco.ProyectoI.model.Customer;
-import pe.com.projectbanco.ProyectoI.service.ICustomerService;
+import pe.com.projectbanco.ProyectoI.model.Product;
+import pe.com.projectbanco.ProyectoI.service.IProductrService;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @Slf4j
 @RestController
-@RequestMapping("/api/customer")
-public class CustomerController {
+@RequestMapping("/api/product")
+public class ProductController {
     //private static final Logger logger = LoggerFactory.getLogger(CustomerController.class);
     @Autowired
-    private ICustomerService iCustomerService;
+    private IProductrService iProductrService;
 
     @PostMapping(value = "/create", consumes = "application/json", produces = "application/json")
-    public ResponseEntity<Mono<Customer>> createCustomer(@RequestBody Customer customer) {
-        log.info("Start controllerCustomer method Create");
-        Mono<Customer> oCustomer = iCustomerService.create(customer);
-        return new ResponseEntity<>(oCustomer, HttpStatus.CREATED);
+    public ResponseEntity<Mono<Product>> createProduct(@RequestBody Product product) {
+        log.info("Start controllerProduct method Create");
+        Mono<Product> oProduct = iProductrService.create(product);
+        return new ResponseEntity<>(oProduct, HttpStatus.CREATED);
     }
 
     @GetMapping(value = "/findAll", produces = "application/json")
-    public ResponseEntity<Flux<Customer>> findAllCustomers() {
+    public ResponseEntity<Flux<Product>> findAllProducts() {
         log.info("Start controllerCustomer method findAll");
-        Flux<Customer> listCustomer = iCustomerService.findAll();
-        return new ResponseEntity<Flux<Customer>>(listCustomer, HttpStatus.OK);
+        Flux<Product> listProduct = iProductrService.findAll();
+        return new ResponseEntity<Flux<Product>>(listProduct, HttpStatus.OK);
 
     }
 
     @PutMapping
-    public ResponseEntity<Mono<Customer>> changeCustomer(@RequestBody Customer customer) {
-        log.info("Start controllerCustomer method change");
-        Mono<Customer> p = iCustomerService.update(customer);
+    public ResponseEntity<Mono<Product>> changeProduct(@RequestBody Product product) {
+        log.info("Start controllerProduct method change");
+        Mono<Product> p = iProductrService.update(product);
         return new ResponseEntity<>(p, HttpStatus.CREATED);
     }
 
-    @DeleteMapping("/{id}")
+  /*  @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteCustomer(@PathVariable("id") String codCustomer) {
         log.info("Start controllerCustomer method change Delete =>", codCustomer);
         Mono<Customer> p = iCustomerService.listPorId(codCustomer);
@@ -54,11 +52,11 @@ public class CustomerController {
         log.info("Start controllerCustomer method findByIdCustomer =>", codCustomer);
         Mono<Customer> oListCustomer = iCustomerService.listPorId(codCustomer);
         return new ResponseEntity<>(oListCustomer,HttpStatus.OK);
-    }
-    @GetMapping("findByNroDoc/{nroOocument}")
-    public  ResponseEntity<Flux<Customer>> findByNroDocument(@PathVariable("nroOocument") String nroOocument){
-        log.info("Start controllerCustomer method findByIdCustomer =>", nroOocument);
-        Flux<Customer> oListCustomer = iCustomerService.findByNroDocument(nroOocument).filter(p->p.isActive_s_n());
+    }*/
+    @GetMapping("findByNroDoc/{nameProduct}")
+    public  ResponseEntity<Flux<Product>> findByNameProduct(@PathVariable("nameProduct") String nameProduct){
+        log.info("Start controllerCustomer method findByNameProduct =>", nameProduct);
+        Flux<Product> oListCustomer = iProductrService.findByNameProduct(nameProduct);
         return new ResponseEntity<>(oListCustomer,HttpStatus.OK);
     }
 }

@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import javax.validation.Valid;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Document(collection = "business")
@@ -19,7 +21,9 @@ public class Business {
     private String companyName;
     private String legalRepresentative;
     private Integer nroLegalRepresentative;
+    @Valid
     private Customer customer;
+
     @JsonIgnore
     public Customer getCustomer() {
         return customer;

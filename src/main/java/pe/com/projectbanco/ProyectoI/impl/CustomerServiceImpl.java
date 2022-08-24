@@ -5,18 +5,17 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pe.com.projectbanco.ProyectoI.model.Customer;
-import pe.com.projectbanco.ProyectoI.model.Personal;
 import pe.com.projectbanco.ProyectoI.repo.ICustomerRepo;
 import pe.com.projectbanco.ProyectoI.service.ICustomerService;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @Service
+//@Component
 public class CustomerServiceImpl implements ICustomerService {
     private static final Logger logger = LoggerFactory.getLogger(CustomerServiceImpl.class);
     @Autowired
     private ICustomerRepo iCustomerRepo;
-
     @Override
     public Mono<Customer> create(Customer obj) {
         logger.info(" Request Body: "+ obj);
@@ -47,8 +46,24 @@ public class CustomerServiceImpl implements ICustomerService {
 
     @Override
     public Mono<Void> delete(Customer customer) {
-       return iCustomerRepo.delete(customer);
+        return iCustomerRepo.delete(customer);
 
     }
 
+    @Override
+    public Flux<Customer> findByIdCustomer(String idCustomer) {
+        return iCustomerRepo.findAll().filter(p->p.getCodCustomer().equals(idCustomer));
+    }
+
+    @Override
+    public Flux<Customer> findByNroDocument(String customerType) {
+        return iCustomerRepo.findAll().filter(p->p.getNroDocument().equals(customerType));
+
+    }
+
+    @Override
+    public Flux<Customer> findByTypeCustomer(String customerType) {
+        return iCustomerRepo.findAll().filter(p->p.getCustomerType().equals(customerType));
+
+    }
 }

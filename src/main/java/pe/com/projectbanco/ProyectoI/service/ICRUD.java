@@ -11,5 +11,5 @@ public interface ICRUD<T, V> {
     Mono <T> listPorId(V id);
 
     Mono <Void> deleteById(V id);
-   Mono <Void> delete (T obj);
+    Mono <Void> delete (T obj);
 }

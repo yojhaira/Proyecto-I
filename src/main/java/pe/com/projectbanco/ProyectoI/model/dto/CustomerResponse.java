@@ -1,24 +1,14 @@
 package pe.com.projectbanco.ProyectoI.model.dto;
 
 import lombok.Data;
-import pe.com.projectbanco.ProyectoI.model.Business;
-import pe.com.projectbanco.ProyectoI.model.Personal;
+import pe.com.projectbanco.ProyectoI.model.Customer;
 
 
 @Data
 public class CustomerResponse {
 
-    private Integer id;
-
-    private String email;
-
-    private String phone;
-
-    private String address;
-
-    private Personal personal;
-    
-    private Business business;
+    private Customer customer;
+    //private Personal personal;
 
 
 }
