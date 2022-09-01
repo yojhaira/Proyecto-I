@@ -3,20 +3,17 @@ package pe.com.projectbanco.ProyectoI.model;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.bson.codecs.pojo.annotations.BsonIgnore;
-import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Document(collection = "product")
+@Document(collection = "currentAccount")
 @Data
 
-public class Product {
+public class currentAccount {
     @Id
-    @BsonIgnore
     private String id;
-    private currentAccount bank_account;
-    private credit bank_credit;
+    private String typeCC; // ahorro (A), Account corriente(CC), plazo fijo (PF)
+
 }

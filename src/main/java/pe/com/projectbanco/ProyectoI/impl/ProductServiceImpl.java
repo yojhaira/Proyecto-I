@@ -5,7 +5,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pe.com.projectbanco.ProyectoI.model.Product;
+import pe.com.projectbanco.ProyectoI.model.Personal;
 import pe.com.projectbanco.ProyectoI.repo.IProductRepo;
+import pe.com.projectbanco.ProyectoI.repo.IPersonalRepo;
 import pe.com.projectbanco.ProyectoI.service.IProductrService;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -47,12 +49,10 @@ public class ProductServiceImpl implements IProductrService {
     @Override
     public Mono<Void> delete(Product product) {
         return iProductRepo.delete(product);
-
     }
 
     @Override
-    public Flux<Product> findByNameProduct(String nameProduct) {
-        return iProductRepo.findAll().filter(p->p.getNameProduct().equals(nameProduct));
-
+    public Flux<Product> findByIdProduct(String id) {
+        return iProductRepo.findAll().filter(product -> product.getId().equals(id) );
     }
 }

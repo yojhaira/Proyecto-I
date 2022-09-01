@@ -46,15 +46,9 @@ public class BusinessServiceImpl implements IBusinessService {
 
     @Override
     public Mono<Void> delete(Business Business) {
-       return iBusinessRepo.delete(Business);
+        return iBusinessRepo.delete(Business);
 
     }
-
-    @Override
-    public Flux<Business> findByIdBusiness(String idBusiness) {
-        return iBusinessRepo.findAll().filter(p->p.getIdBusiness().equals(idBusiness));
-    }
-
     @Override
     public Flux<Business> findByRUC(String ruc) {
         return iBusinessRepo.findAll().filter(p->p.getRuc().equals(ruc));

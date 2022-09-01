@@ -4,7 +4,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pe.com.projectbanco.ProyectoI.model.Business;
@@ -42,20 +41,12 @@ public class BusinessController {
         return new ResponseEntity<>(p, HttpStatus.CREATED);
     }
 
-    @DeleteMapping("delete/{idBusiness}")
-    public Flux<ResponseEntity<Void>> deleteBusiness(@PathVariable("idBusiness") String idBusiness)
+    @DeleteMapping("delete/{ruc}")
+    public Flux<ResponseEntity<Void>> deleteBusiness(@PathVariable("ruc") String idBusiness)
     {
-        return iBusinessService.findByIdBusiness(idBusiness).flatMap(p -> {
+        return iBusinessService.findByRUC(idBusiness).flatMap(p -> {
             return iBusinessService.delete(p).then(Mono.just( new ResponseEntity<Void>(HttpStatus.NO_CONTENT)));
         }).defaultIfEmpty(new ResponseEntity<Void>(HttpStatus.NOT_FOUND));
-    }
-
-    @GetMapping("findById/{idBusiness}")
-    public Flux<ResponseEntity<Business>> findByIdBusiness(@PathVariable("idBusiness") String idBusiness){
-        logger.info("Start controllerCustomer method findByIdBusiness =>", idBusiness);
-        return iBusinessService.findByIdBusiness(idBusiness)
-                .map(res-> ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(res))
-                .defaultIfEmpty(ResponseEntity.notFound().build());
     }
 
     @GetMapping("findByNroDoc/{ruc}")

@@ -4,7 +4,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import pe.com.projectbanco.ProyectoI.model.Movement;
 import pe.com.projectbanco.ProyectoI.model.Personal;
 import pe.com.projectbanco.ProyectoI.repo.IPersonalRepo;
 import pe.com.projectbanco.ProyectoI.service.IPersonalService;
@@ -13,7 +12,6 @@ import reactor.core.publisher.Mono;
 
 
 @Service
-//@Component
 public class PersonalServiceImpl implements IPersonalService {
     private static final Logger logger = LoggerFactory.getLogger(PersonalServiceImpl.class);
 
@@ -39,7 +37,6 @@ public class PersonalServiceImpl implements IPersonalService {
     @Override
     public Mono<Personal> listPorId(String id) {
         Mono<Personal> op = iPersonalRepo.findById(id);
-        //return op.isPresent() ? op.get() : new Personal();
         return op;
     }
 
@@ -54,6 +51,13 @@ public class PersonalServiceImpl implements IPersonalService {
 
     }
 
+    @Override
+    public Flux<Personal> findByDNI(String dni) {
+        return iPersonalRepo.findAll().filter(buscar -> buscar.getDni().equals(dni));
+    }
 
-
+    @Override
+    public Flux<Personal> findByTypePersonal(String typePersonal) {
+        return iPersonalRepo.findAll().filter(typeP -> typeP.getTypePersonal().equals(typePersonal));
+    }
 }

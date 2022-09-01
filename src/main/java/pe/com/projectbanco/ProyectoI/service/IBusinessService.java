@@ -8,8 +8,8 @@ import reactor.core.publisher.Flux;
 
 public interface IBusinessService extends ICRUD<Business, String> {
 
-    @Query("{'idBusiness':?0}")
-    Flux<Business> findByIdBusiness(String idBusiness);
+    /*@Query("{'idBusiness':?0}")
+    Flux<Business> findByIdBusiness(String idBusiness);*/
     @Query("{'ruc':?0}")
     Flux<Business> findByRUC(String ruc);
 

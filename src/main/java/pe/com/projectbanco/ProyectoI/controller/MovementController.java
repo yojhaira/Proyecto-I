@@ -41,18 +41,18 @@ public class MovementController {
         return new ResponseEntity<>(oMovement, HttpStatus.CREATED);
     }
 
-    @DeleteMapping("delete/{codMovement}")
-    public Flux<ResponseEntity<Void>> deleteMovemenent(@PathVariable("codMovement") String codMovement) {
-        logger.info("Start controllerMovemenent method change Delete =>", codMovement);
-        return iMovementService.findByIdMovement(codMovement).flatMap(res -> {
+    @DeleteMapping("delete/{id}")
+    public Flux<ResponseEntity<Void>> deleteMovemenent(@PathVariable("id") String id) {
+        logger.info("Start controllerMovemenent method change Delete =>", id);
+        return iMovementService.findByIdMovement(id).flatMap(res -> {
             return iMovementService.delete(res).then(Mono.just( new ResponseEntity<Void>(HttpStatus.NO_CONTENT)));
         }).defaultIfEmpty(new ResponseEntity<Void>(HttpStatus.NOT_FOUND));
     }
 
-    @GetMapping("findById/{codMovement}")
-    public Flux<ResponseEntity<Movement>> findByIdCustomer(@PathVariable("codMovement") String codMovement){
-        logger.info("Start controllerMovemenent method findByIdMovemenent =>", codMovement);
-        return iMovementService.findByIdMovement(codMovement)
+    @GetMapping("findById/{id}")
+    public Flux<ResponseEntity<Movement>> findByIdCustomer(@PathVariable("id") String id){
+        logger.info("Start controllerMovemenent method findByIdMovemenent =>", id);
+        return iMovementService.findByIdMovement(id)
                 .map(res-> ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(res))
                 .defaultIfEmpty(ResponseEntity.notFound().build());
     }

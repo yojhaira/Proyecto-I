@@ -54,6 +54,6 @@ public class MovementServiceImpl implements IMovementService {
 
     @Override
     public Flux<Movement> findByIdMovement(String codMovement) {
-        return iMovRepo.findAll().filter(res-> res.getCodMovement().equals(codMovement));
+        return null;
     }
 }
